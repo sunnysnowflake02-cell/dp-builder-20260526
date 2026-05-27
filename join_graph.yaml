@@ -1,28 +1,18 @@
 version: v1
-lens: schema-supply-chain-v2
+lens: supply-chain-data-product
 description: Semantic join graph for this product. Each Lens SQL file remains a single-table SELECT; relationships below define
   how logical tables connect for analytics and validation.
 edges:
 - left_table: orders
-  right_table: order_items
-  left_fqn: icebase.supply_chain.orders
-  right_fqn: icebase.supply_chain.order_items
-  join_on:
-  - left: order_id
-    right: order_id
-  cardinality: one_to_many
-  id: bb71fb2c-8203-4074-8114-2f5c4c9521a5
-  rationale: Orders can have multiple order items.
-- left_table: order_items
   right_table: shipments
-  left_fqn: icebase.supply_chain.order_items
+  left_fqn: icebase.supply_chain.orders
   right_fqn: icebase.supply_chain.shipments
   join_on:
   - left: order_id
     right: order_id
   cardinality: one_to_many
-  id: c0de0da7-aebb-4ac6-8f2f-8c5982dd833d
-  rationale: Each order can correspond to multiple shipments.
+  id: 3539099f-a6d3-4d1c-b797-51391a89e2cb
+  rationale: Orders can have multiple shipments associated with them.
 - left_table: inventory
   right_table: warehouses
   left_fqn: icebase.supply_chain.inventory
@@ -30,9 +20,9 @@ edges:
   join_on:
   - left: warehouse_id
     right: warehouse_id
-  cardinality: many_to_one
-  id: cf4414a0-212f-4856-bb3b-c5b0f66df6b6
-  rationale: Multiple inventory records can exist for each warehouse.
+  cardinality: one_to_many
+  id: fddc3733-5314-479b-ad29-a4dc645e2286
+  rationale: Each warehouse can hold multiple SKUs.
 - left_table: warehouses
   right_table: geolocation
   left_fqn: icebase.supply_chain.warehouses
@@ -41,15 +31,15 @@ edges:
   - left: zip_code
     right: zip_code
   cardinality: one_to_one
-  id: ddb94a7e-b637-43b5-917b-c380efec7273
-  rationale: Each warehouse is associated with a specific zip code.
+  id: 339d575b-078c-4f10-a247-a787e70e4a1c
+  rationale: Geolocation data is tied to warehouse zip codes.
 - left_table: shipments
-  right_table: geolocation
+  right_table: warehouses
   left_fqn: icebase.supply_chain.shipments
-  right_fqn: icebase.supply_chain.geolocation
+  right_fqn: icebase.supply_chain.warehouses
   join_on:
-  - left: zip_code
-    right: zip_code
-  cardinality: one_to_one
-  id: 94a0add0-b578-443d-9ef6-e58dbf5bede9
-  rationale: Shipments are linked to delivery zip codes.
+  - left: warehouse_id
+    right: warehouse_id
+  cardinality: many_to_one
+  id: b86c692b-3f6e-48ff-bad9-afff4315dfc7
+  rationale: Shipments originate from warehouses.

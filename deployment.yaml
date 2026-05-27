@@ -1,11 +1,11 @@
-name: schema-supply-chain-v2
+name: supply-chain-data-product
 version: v1alpha
 type: lens
 tags:
   - Tier.Generated
   - SemanticModelAgent
 description: |
-  The Supply Chain 360 Data Product Blueprint provides stakeholders with a comprehensive view of inventory levels, warehouse performance, and fulfillment logistics, enabling informed decision-making across the supply chain. By integrating data from various entities such as inventory, orders, and shipments, this blueprint facilitates a proactive approach to managing stock availability and delivery reliability. The inclusion of geospatial data enhances lead-time analysis, allowing businesses to optimize routes and improve overall efficiency in their supply chain operations. This holistic perspective empowers organizations to transition from reactive shipment tracking to a strategic Supply Chain Control Tower.
+  This supply chain data product provides stakeholders with a comprehensive view of inventory levels, warehouse performance, and fulfillment logistics, enabling proactive decision-making. By integrating data across various domains such as inventory, orders, and shipments, it facilitates real-time insights into stock availability and delivery reliability. The inclusion of geospatial analysis enhances lead-time assessments, allowing businesses to optimize their supply chain operations and improve customer satisfaction. This unified approach supports strategic planning and operational efficiency, ultimately driving better performance across the supply chain.
 workspace: public
 lens:
   compute: runnable-default

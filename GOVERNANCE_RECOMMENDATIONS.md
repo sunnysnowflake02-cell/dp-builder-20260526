@@ -1,24 +1,23 @@
 ## Governance context
 
-This data product employs row-level segment security to manage access to sensitive data. Each table contains segments that filter rows based on specific business criteria, ensuring that only authorized user groups can access relevant data. The governance mode is mixed, as some tables will have full PII redaction for sensitive dimensions while others will utilize segment security based on business needs.
+This data product will implement row-level segment security to ensure that sensitive data is protected while allowing for effective access control. The governance model will include user groups that define access to specific segments of the data based on business roles. The segments will use SQL predicates to filter data based on relevant criteria, ensuring that users only see data pertinent to their roles. There are no full PII redaction requirements, as the focus is on segment-based access control.
 
 ## Sample user groups & YAML
 
-### Sample User Groups
-The following user groups will be created in DataOS to manage access to the Supply Chain data product:
-
 ```yaml
 segments:
-  - name: warehouse_access
-    sql: "{TABLE}.district = 'Portland'"
+  - name: pittsburgh_warehouse_access
+    sql: "{TABLE}.warehouse_id = 'WH1001'"
     meta:
       secure:
         user_groups:
           includes:
-            - warehouse_operators
+            - pittsburgh_warehouse_users
+
 user_groups:
-  warehouse_operators:
-    api_scopes: [read]
+  pittsburgh_warehouse_users:
+    api_scopes:
+      - read
     includes:
       - users:id:warehouse_ops_user_1
       - users:id:warehouse_ops_user_2
@@ -26,8 +25,8 @@ user_groups:
 
 ## Suggested mode
 
-`mixed`
+`segment_user_groups`
 
 ## Role names (reuse in user_groups + segments)
 
-`warehouse_operators`, `shipping_analysts`, `inventory_managers`
+`pittsburgh_warehouse_users`, `portland_warehouse_users`, `kansas_city_warehouse_users`

@@ -1,0 +1,73 @@
+name: wf-supply-chain-data-product-dq-bundle
+version: v1
+type: workflow
+tags:
+  - Quality.BusinessRule
+  - Tier.Generated
+  - SemanticModelAgent
+description: |
+  Consolidated business-rule data quality checks for this lens. One workflow;
+  multiple source datasets under stackSpec.inputs.
+workspace: public
+workflow:
+  dag:
+    - name: supply-chain-data-product-dq-bundle
+      description: |
+        Consolidated DQ checks for approved steward rules (multi-table).
+      title: Consolidated business validation checks
+      spec:
+        stack: soda+python:1.0
+        logLevel: INFO
+        compute: runnable-default
+        resources:
+          requests:
+            cpu: 500m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+        stackSpec:
+          inputs:
+            - dataset: dataos://icebase:supply_chain/inventory
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+                - failed rows:
+                    name: quantity_check
+                    fail condition: quantity_in_stock <= reorder_qty
+                    attributes:
+                      category: Completeness
+                      description: "This rule ensures that stock levels are adequate to meet demand. If quantity_in_stock falls below reorder_qty, it indicates a potential stockout risk, which is critical for maintaining supply chain efficiency. The sample data indicates a variety of stock levels, so this check is vital for operational health."
+              profile:
+                columns:
+                  - "*"
+
+            - dataset: dataos://icebase:supply_chain/shipments
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+                - failed rows:
+                    name: expected_delivery_date_future
+                    fail condition: TRY_CAST(expected_delivery_date AS DATE) < CURRENT_DATE
+                    attributes:
+                      category: Freshness
+                      description: "The expected_delivery_date must always be in the future to ensure that shipment timelines are realistic and actionable. Currently, the sample data shows future dates, but this check is essential to prevent misleading information in the supply chain operations."
+                - failed rows:
+                    name: on_time_delivery_check
+                    fail condition: status = 'Delivered' AND on_time_delivery = FALSE
+                    attributes:
+                      category: Validity
+                      description: "For shipments marked as 'Delivered', the on_time_delivery flag should be true. This ensures that the shipment performance metrics accurately reflect the efficiency of the supply chain. The sample data shows several delivered shipments; validating this flag is key to maintaining accurate performance metrics."
+              profile:
+                columns:
+                  - "*"
