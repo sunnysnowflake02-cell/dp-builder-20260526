@@ -2,41 +2,41 @@ tables:
   - name: order_items
     title: Order Items Data
     sql: {{ load_sql('order_items') }}
-    description: Details of items included in each order.
+    description: Details of items included in customer orders.
     public: true
     joins:
-      - name: inventory
-        relationship: many_to_one
-        sql: "{TABLE.sku_id} = {inventory.sku_id}"
+      - name: shipments
+        relationship: one_to_many
+        sql: "{TABLE.order_id} = {shipments.order_id}"
     dimensions:
       - name: order_id
-        description: Unique identifier for the order.
+        description: The unique identifier for the order.
         type: number
         column: order_id
         primary_key: true
         public: true
       - name: sku_id
-        description: Unique identifier for the SKU ordered.
+        description: The unique identifier for the SKU ordered.
         type: number
         column: sku_id
         public: true
       - name: category
-        description: Category of the SKU.
+        description: The category of the SKU.
         type: string
         column: category
         public: true
       - name: qty
-        description: Quantity of the SKU ordered.
+        description: The quantity of the SKU ordered.
         type: number
         column: qty
         public: true
       - name: price
-        description: Price of the SKU at the time of order.
+        description: The price of the SKU at the time of the order.
         type: number
         column: price
         public: true
       - name: total_sale_value
-        description: Total sale value for the ordered quantity of the SKU.
+        description: The total sale value for the ordered SKU.
         type: number
         column: total_sale_value
         public: true
@@ -45,7 +45,11 @@ tables:
         description: Distinct rows at natural grain (count distinct on primary key column).
         type: count
         sql: "{TABLE.order_id}"
-      - name: total_order_items
-        description: Total number of items ordered across all orders.
+      - name: sum_price
+        description: Sum of price for rows in this grain.
         type: sum
-        sql: "SUM({TABLE.qty})"
+        sql: "{TABLE.price}"
+      - name: avg_price
+        description: Average of price for rows in this grain.
+        type: avg
+        sql: "{TABLE.price}"

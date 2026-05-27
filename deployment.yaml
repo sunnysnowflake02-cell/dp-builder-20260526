@@ -1,24 +1,17 @@
-name: schema-supply-chain
+name: schema-supply-chain-v2
 version: v1alpha
 type: lens
 tags:
-- Tier.Generated
-- SemanticModelAgent
-description: The Supply Chain 360 Data Product Blueprint provides stakeholders with a comprehensive view of inventory levels,
-  warehouse performance, and fulfillment logistics, enabling informed decision-making across the supply chain. By integrating
-  data from various entities such as orders, shipments, and delivery addresses, this lens facilitates proactive management
-  of stock availability and delivery reliability. The inclusion of geospatial data enhances lead-time analysis, allowing for
-  optimized routing and improved operational efficiency. This centralized intelligence layer empowers businesses to transition
-  from reactive shipment tracking to a strategic Supply Chain Control Tower, ultimately driving better performance and customer
-  satisfaction.
+  - Tier.Generated
+  - SemanticModelAgent
+description: |
+  The Supply Chain 360 Data Product Blueprint provides stakeholders with a comprehensive view of inventory levels, warehouse performance, and fulfillment logistics, enabling informed decision-making across the supply chain. By integrating data from various entities such as inventory, orders, and shipments, this blueprint facilitates a proactive approach to managing stock availability and delivery reliability. The inclusion of geospatial data enhances lead-time analysis, allowing businesses to optimize routes and improve overall efficiency in their supply chain operations. This holistic perspective empowers organizations to transition from reactive shipment tracking to a strategic Supply Chain Control Tower.
 workspace: public
 lens:
   compute: runnable-default
   secrets:
     - name: gitsecret
       allKeys: true
-  - name: gitsecret
-    allKeys: true
   source:
     type: minerva
     name: minervac
@@ -28,7 +21,6 @@ lens:
     lensBaseDir: model
     syncFlags:
       - --ref=main
-    - --ref=main
   api:
     logLevel: info
     resources:

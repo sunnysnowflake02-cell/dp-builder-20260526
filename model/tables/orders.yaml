@@ -2,7 +2,7 @@ tables:
   - name: orders
     title: Orders Data
     sql: {{ load_sql('orders') }}
-    description: Details of customer orders including delivery information.
+    description: Customer orders including delivery details.
     public: true
     joins:
       - name: order_items
@@ -10,23 +10,23 @@ tables:
         sql: "{TABLE.order_id} = {order_items.order_id}"
     dimensions:
       - name: order_id
-        description: Unique identifier for the order.
+        description: The unique identifier for the order.
         type: number
         column: order_id
         primary_key: true
         public: true
       - name: order_creation_date
-        description: Date and time when the order was created.
+        description: The date when the order was created.
         type: time
         column: order_creation_date
         public: true
       - name: customer_id
-        description: Identifier for the customer placing the order.
+        description: The unique identifier for the customer who placed the order.
         type: number
         column: customer_id
         public: true
       - name: delivery_address
-        description: Address where the order is to be delivered.
+        description: The address where the order is to be delivered.
         type: string
         column: delivery_address
         public: true
@@ -37,12 +37,12 @@ tables:
               includes:
                 - masking_redacted
       - name: zip_code
-        description: Zip code for the delivery address.
+        description: The zip code for the delivery address.
         type: number
         column: zip_code
         public: true
       - name: delivery_date_chosen
-        description: Date chosen for delivery of the order.
+        description: The date chosen by the customer for delivery.
         type: time
         column: delivery_date_chosen
         public: true
@@ -51,7 +51,3 @@ tables:
         description: Distinct rows at natural grain (count distinct on primary key column).
         type: count
         sql: "{TABLE.order_id}"
-      - name: total_orders
-        description: Total number of orders placed.
-        type: count
-        sql: "COUNT({TABLE.order_id})"

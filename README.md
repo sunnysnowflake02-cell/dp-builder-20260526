@@ -1,15 +1,16 @@
-# Generated lens: schema-supply-chain
+# Generated lens: schema-supply-chain-v2
 
 ## Description
-The Supply Chain 360 Data Product integrates multiple tables to provide a comprehensive view of inventory, warehouse performance, and fulfillment logistics. Key joins include linking orders to order items, shipments to orders, and warehouses to inventory.
+schema-supply-chain-v2
+
+This lens integrates data from multiple tables to provide a comprehensive view of the supply chain, including inventory levels, order details, shipment statuses, and warehouse performance.
 
 How approved tables connect:
 - icebase.supply_chain.orders relates to icebase.supply_chain.order_items using order_id and order_id (relationship: one to many). Orders can have multiple order items.
-- icebase.supply_chain.order_items relates to icebase.supply_chain.inventory using sku_id and sku_id (relationship: many to one). Each order item corresponds to a specific SKU in inventory.
-- icebase.supply_chain.shipments relates to icebase.supply_chain.orders using order_id and order_id (relationship: one to one). Each shipment is linked to a specific order.
-- icebase.supply_chain.inventory relates to icebase.supply_chain.warehouses using warehouse_id and warehouse_id (relationship: many to one). Inventory is stored in specific warehouses.
-- icebase.supply_chain.warehouses relates to icebase.supply_chain.geolocation using zip_code and zip_code (relationship: one to one). Geolocation data is linked to warehouse zip codes.
-- icebase.supply_chain.shipments relates to icebase.supply_chain.geolocation using zip_code and zip_code (relationship: one to one). Geolocation data is linked to shipment zip codes.
+- icebase.supply_chain.order_items relates to icebase.supply_chain.shipments using order_id and order_id (relationship: one to many). Each order can correspond to multiple shipments.
+- icebase.supply_chain.inventory relates to icebase.supply_chain.warehouses using warehouse_id and warehouse_id (relationship: many to one). Multiple inventory records can exist for each warehouse.
+- icebase.supply_chain.warehouses relates to icebase.supply_chain.geolocation using zip_code and zip_code (relationship: one to one). Each warehouse is associated with a specific zip code.
+- icebase.supply_chain.shipments relates to icebase.supply_chain.geolocation using zip_code and zip_code (relationship: one to one). Shipments are linked to delivery zip codes.
 
 ## Source references
 

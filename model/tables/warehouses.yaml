@@ -2,7 +2,7 @@ tables:
   - name: warehouses
     title: Warehouses Data
     sql: {{ load_sql('warehouses') }}
-    description: Details of warehouses including performance metrics.
+    description: Information about warehouses including performance metrics.
     public: true
     joins:
       - name: geolocation
@@ -10,48 +10,48 @@ tables:
         sql: "{TABLE.zip_code} = {geolocation.zip_code}"
     dimensions:
       - name: warehouse_id
-        description: Unique identifier for the warehouse.
+        description: The unique identifier for the warehouse.
         type: number
         column: warehouse_id
         primary_key: true
         public: true
       - name: district
-        description: District where the warehouse is located.
+        description: The district where the warehouse is located.
         type: string
         column: district
         public: true
       - name: zip_code
-        description: Zip code for the warehouse location.
+        description: The zip code of the warehouse location.
         type: number
         column: zip_code
         public: true
       - name: wh_orders_lw
-        description: Last week orders processed by the warehouse.
+        description: The number of orders in the last week.
         type: number
         column: wh_orders_lw
         public: true
       - name: wh_orders_lq
-        description: Last quarter orders processed by the warehouse.
+        description: The number of orders in the last quarter.
         type: number
         column: wh_orders_lq
         public: true
       - name: wh_orders_ly
-        description: Last year orders processed by the warehouse.
+        description: The number of orders in the last year.
         type: number
         column: wh_orders_ly
         public: true
       - name: wh_orders_avg_daily
-        description: Average daily orders processed by the warehouse.
+        description: The average number of orders processed daily.
         type: number
         column: wh_orders_avg_daily
         public: true
       - name: wh_orders_l24
-        description: Last 24 hours orders processed by the warehouse.
+        description: The number of orders in the last 24 hours.
         type: number
         column: wh_orders_l24
         public: true
       - name: updated_on
-        description: Timestamp of the last update to the warehouse data.
+        description: The last updated timestamp for the warehouse record.
         type: time
         column: updated_on
         public: true
@@ -60,7 +60,11 @@ tables:
         description: Distinct rows at natural grain (count distinct on primary key column).
         type: count
         sql: "{TABLE.warehouse_id}"
-      - name: total_orders_processed
-        description: Total number of orders processed by all warehouses.
-        type: sum
-        sql: "SUM({TABLE.wh_orders_lw})"
+    segments:
+      - name: portland_warehouses
+        sql: "{TABLE}.district = 'Portland'"
+        meta:
+          secure:
+            user_groups:
+              includes:
+                - warehouse_operators

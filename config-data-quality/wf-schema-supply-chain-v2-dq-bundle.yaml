@@ -1,0 +1,119 @@
+name: wf-schema-supply-chain-v2-dq-bundle
+version: v1
+type: workflow
+tags:
+  - Quality.BusinessRule
+  - Tier.Generated
+  - SemanticModelAgent
+description: |
+  Consolidated business-rule data quality checks for this lens. One workflow;
+  multiple source datasets under stackSpec.inputs.
+workspace: public
+workflow:
+  dag:
+    - name: schema-supply-chain-v2-dq-bundle
+      description: |
+        Consolidated DQ checks for approved steward rules (multi-table).
+      title: Consolidated business validation checks
+      spec:
+        stack: soda+python:1.0
+        logLevel: INFO
+        compute: runnable-default
+        resources:
+          requests:
+            cpu: 500m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+        stackSpec:
+          inputs:
+            - dataset: dataos://icebase:supply_chain/inventory
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+                - failed rows:
+                    name: quantity_check_stockout_risk
+                    fail condition: quantity_in_stock <= reorder_qty
+                    attributes:
+                      category: Validity
+                      description: "The `quantity_in_stock` must always exceed the `reorder_qty` to avoid stockouts. This is crucial for maintaining supply chain efficiency and ensuring product availability. Current profiling indicates a small number of rows where this condition might not be met, necessitating a review."
+              profile:
+                columns:
+                  - "*"
+
+            - dataset: dataos://icebase:supply_chain/shipments
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+                - failed rows:
+                    name: expected_delivery_after_fulfillment
+                    fail condition: expected_delivery_date <= order_fulfillment_date
+                    attributes:
+                      category: Validity
+                      description: "The `expected_delivery_date` should logically follow the `order_fulfillment_date` to ensure proper scheduling and customer satisfaction. Any discrepancies could indicate data entry errors or processing issues. Profiling shows that this relationship should be validated across all records."
+              profile:
+                columns:
+                  - "*"
+
+            - dataset: dataos://icebase:supply_chain/order_items
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+              profile:
+                columns:
+                  - "*"
+
+            - dataset: dataos://icebase:supply_chain/orders
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+              profile:
+                columns:
+                  - "*"
+
+            - dataset: dataos://icebase:supply_chain/warehouses
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+              profile:
+                columns:
+                  - "*"
+
+            - dataset: dataos://icebase:supply_chain/warehouses_ranking
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+              profile:
+                columns:
+                  - "*"

@@ -6,18 +6,18 @@ tables:
     public: true
     dimensions:
       - name: warehouse_id
-        description: Unique identifier for the warehouse.
+        description: The unique identifier for the warehouse.
         type: number
         column: warehouse_id
         primary_key: true
         public: true
       - name: efficiency_score_pct
-        description: Efficiency score percentage of the warehouse.
+        description: The efficiency score of the warehouse as a percentage.
         type: number
         column: efficiency_score_pct
         public: true
       - name: efficiency_rank
-        description: Rank of the warehouse based on efficiency.
+        description: The rank of the warehouse based on efficiency.
         type: number
         column: efficiency_rank
         public: true

@@ -15,10 +15,10 @@
 **Overall:** PASS
 
 ## Join graph
-All edges connect approved tables with valid join columns. Relationships are appropriately defined, with a mix of one-to-many and many-to-one connections, and all relationships are within the same schema.
+All edges connect approved tables with appropriate join columns. Relationships are well-defined, with a preference for same-schema connections.
 
 ## SQL / Lens YAML
-All SQL references use load_sql correctly, and the SQL files are expected to be Trino-flavored. Dimension types are consistent with the allowed types: boolean, number, string, time.
+All SQL references use load_sql correctly. The SQL files are expected to be Trino-flavored. Dimension types are valid as per the JSON summary.
 
 ## Consumer data product YAML
 The consumer data product YAML references the lens name and approved source FQNs consistently and sensibly.
