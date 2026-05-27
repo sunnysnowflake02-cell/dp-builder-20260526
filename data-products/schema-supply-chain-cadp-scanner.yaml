@@ -1,0 +1,26 @@
+version: v1
+name: wf-schema-supply-chain-cadp-scanner
+type: workflow
+description: |
+  Scanner workflow for consumer-aligned data product schema-supply-chain-cadp (metadata registration in DataOS).
+tags:
+  - Tier.Gold
+  - SemanticModelAgent
+workspace: public
+workflow:
+  dag:
+    - name: schema-supply-chain-cadp-scanner
+      description: Scanner for schema-supply-chain-cadp (data product metadata registration).
+      title: Schema Supply Chain Cadp CADP scanner
+      spec:
+        stack: scanner:2.0
+        compute: runnable-default
+        stackSpec:
+          type: data-product
+          sourceConfig:
+            config:
+              type: DataProductMetadata
+              markDeletedDataProducts: true
+              dataProductFilterPattern:
+                includes:
+                  - schema-supply-chain-cadp

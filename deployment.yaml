@@ -1,0 +1,68 @@
+name: schema-supply-chain
+version: v1alpha
+type: lens
+tags:
+- Tier.Generated
+- SemanticModelAgent
+description: The Supply Chain 360 Data Product Blueprint provides stakeholders with a comprehensive view of inventory levels,
+  warehouse performance, and fulfillment logistics, enabling informed decision-making across the supply chain. By integrating
+  data from various entities such as orders, shipments, and delivery addresses, this lens facilitates proactive management
+  of stock availability and delivery reliability. The inclusion of geospatial data enhances lead-time analysis, allowing for
+  optimized routing and improved operational efficiency. This centralized intelligence layer empowers businesses to transition
+  from reactive shipment tracking to a strategic Supply Chain Control Tower, ultimately driving better performance and customer
+  satisfaction.
+workspace: public
+lens:
+  compute: runnable-default
+  secrets:
+    - name: gitsecret
+      allKeys: true
+  - name: gitsecret
+    allKeys: true
+  source:
+    type: minerva
+    name: minervac
+    catalog: icebase
+  repo:
+    url: https://github.com/sunnysnowflake02-cell/dp-builder-20260526
+    lensBaseDir: model
+    syncFlags:
+      - --ref=main
+    - --ref=main
+  api:
+    logLevel: info
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+  router:
+    logLevel: info
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+  worker:
+    logLevel: info
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+  metric:
+    logLevel: info
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 512Mi

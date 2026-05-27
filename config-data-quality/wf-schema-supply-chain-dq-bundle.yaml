@@ -1,0 +1,146 @@
+name: wf-schema-supply-chain-dq-bundle
+version: v1
+type: workflow
+tags:
+  - Quality.BusinessRule
+  - Tier.Generated
+  - SemanticModelAgent
+description: |
+  Consolidated business-rule data quality checks for this lens. One workflow;
+  multiple source datasets under stackSpec.inputs.
+workspace: public
+workflow:
+  dag:
+    - name: schema-supply-chain-dq-bundle
+      description: |
+        Consolidated DQ checks for approved steward rules (multi-table).
+      title: Consolidated business validation checks
+      spec:
+        stack: soda+python:1.0
+        logLevel: INFO
+        compute: runnable-default
+        resources:
+          requests:
+            cpu: 500m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+        stackSpec:
+          inputs:
+            - dataset: dataos://icebase:supply_chain/shipments
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+                - failed rows:
+                    name: expected_delivery_date_past_check
+                    fail condition: |
+                      TRY_CAST(expected_delivery_date AS DATE) < CURRENT_DATE
+                    attributes:
+                      category: Validity
+                      description: "The expected_delivery_date column should reflect future dates only, as past dates indicate potential data errors or issues with shipment tracking. Given the sample data, we observe future expected delivery dates, but validation is necessary to ensure ongoing data integrity."
+                - failed rows:
+                    name: order_fulfillment_before_delivery
+                    fail condition: |
+                      order_fulfillment_date > delivered_date
+                    attributes:
+                      category: Validity
+                      description: "The order_fulfillment_date should logically precede or coincide with the delivered_date. This ensures that fulfillment operations are accurately recorded and that any delays can be addressed. The data sample indicates potential discrepancies that need validation."
+              profile:
+                columns:
+                  - "*"
+            - dataset: dataos://icebase:supply_chain/inventory
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                - failed rows:
+                    name: inventory_quantity_non_negative
+                    fail condition: |
+                      inventory_quantity < 0
+                    attributes:
+                      category: Validity
+                      description: "Inventory quantity must be non-negative to ensure accurate stock levels."
+              profile:
+                columns:
+                  - "*"
+            - dataset: dataos://icebase:supply_chain/order_items
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                - failed rows:
+                    name: order_item_quantity_positive
+                    fail condition: |
+                      order_item_quantity <= 0
+                    attributes:
+                      category: Validity
+                      description: "Order item quantity must be greater than zero to ensure valid order entries."
+              profile:
+                columns:
+                  - "*"
+            - dataset: dataos://icebase:supply_chain/orders
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                - failed rows:
+                    name: order_date_valid
+                    fail condition: |
+                      TRY_CAST(order_date AS DATE) < CURRENT_DATE
+                    attributes:
+                      category: Validity
+                      description: "Order date must not be in the past to ensure accurate order tracking."
+              profile:
+                columns:
+                  - "*"
+            - dataset: dataos://icebase:supply_chain/warehouses
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                - failed rows:
+                    name: warehouse_capacity_positive
+                    fail condition: |
+                      warehouse_capacity < 0
+                    attributes:
+                      category: Validity
+                      description: "Warehouse capacity must be non-negative to ensure valid warehouse entries."
+              profile:
+                columns:
+                  - "*"
+            - dataset: dataos://icebase:supply_chain/warehouses_ranking
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                - failed rows:
+                    name: ranking_validity
+                    fail condition: |
+                      ranking < 1
+                    attributes:
+                      category: Validity
+                      description: "Ranking must be greater than zero to ensure valid warehouse rankings."
+              profile:
+                columns:
+                  - "*"

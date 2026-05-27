@@ -1,0 +1,39 @@
+user_groups:
+  - name: masking_redacted
+    api_scopes:
+      - meta
+      - data
+      - graphql
+      - jobs
+      - source
+    includes: '*'
+  - name: portland_logistics_users
+    api_scopes:
+      - meta
+      - data
+      - graphql
+      - jobs
+      - source
+    includes:
+      - users:id:portland_user_1
+      - users:id:portland_user_2
+  - name: pittsburgh_logistics_users
+    api_scopes:
+      - meta
+      - data
+      - graphql
+      - jobs
+      - source
+    includes:
+      - users:id:pittsburgh_user_1
+      - users:id:pittsburgh_user_2
+  - name: kansas_city_logistics_users
+    api_scopes:
+      - meta
+      - data
+      - graphql
+      - jobs
+      - source
+    includes:
+      - users:id:kansas_user_1
+      - users:id:kansas_user_2
