@@ -2,7 +2,7 @@ tables:
   - name: geolocation
     title: Geolocation Data
     sql: {{ load_sql('geolocation') }}
-    description: Table containing geolocation data for delivery addresses and warehouses.
+    description: Geolocation data for delivery addresses and warehouses.
     public: true
     dimensions:
       - name: zip_code
@@ -12,12 +12,12 @@ tables:
         primary_key: true
         public: true
       - name: latitude
-        description: Latitude coordinate of the location.
+        description: Latitude of the location.
         type: number
         column: latitude
         public: true
       - name: longitude
-        description: Longitude coordinate of the location.
+        description: Longitude of the location.
         type: number
         column: longitude
         public: true

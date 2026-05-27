@@ -7,7 +7,7 @@ user_groups:
       - jobs
       - source
     includes: '*'
-  - name: pittsburgh_warehouse_users
+  - name: warehouse_manager_miami
     api_scopes:
       - meta
       - data
@@ -15,9 +15,9 @@ user_groups:
       - jobs
       - source
     includes:
-      - users:id:warehouse_ops_user_1
-      - users:id:warehouse_ops_user_2
-  - name: portland_warehouse_users
+      - users:id:warehouse_user_1
+      - users:id:warehouse_user_2
+  - name: inventory_viewer
     api_scopes:
       - meta
       - data
@@ -25,9 +25,9 @@ user_groups:
       - jobs
       - source
     includes:
-      - users:id:warehouse_ops_user_3
-      - users:id:warehouse_ops_user_4
-  - name: kansas_city_warehouse_users
+      - users:id:inventory_user_1
+      - users:id:inventory_user_2
+  - name: shipment_tracker
     api_scopes:
       - meta
       - data
@@ -35,5 +35,15 @@ user_groups:
       - jobs
       - source
     includes:
-      - users:id:warehouse_ops_user_5
-      - users:id:warehouse_ops_user_6
+      - users:id:shipment_user_1
+      - users:id:shipment_user_2
+  - name: order_processor
+    api_scopes:
+      - meta
+      - data
+      - graphql
+      - jobs
+      - source
+    includes:
+      - users:id:order_user_1
+      - users:id:order_user_2

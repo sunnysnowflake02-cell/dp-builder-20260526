@@ -1,0 +1,67 @@
+name: wf-unified-supply-chain-dp-dq-bundle
+version: v1
+type: workflow
+tags:
+  - Quality.BusinessRule
+  - Tier.Generated
+  - SemanticModelAgent
+description: |
+  Consolidated business-rule data quality checks for this lens. One workflow;
+  multiple source datasets under stackSpec.inputs.
+workspace: public
+workflow:
+  dag:
+    - name: unified-supply-chain-dp-dq-bundle
+      description: |
+        Consolidated DQ checks for approved steward rules (multi-table).
+      title: Consolidated business validation checks
+      spec:
+        stack: soda+python:1.0
+        logLevel: INFO
+        compute: runnable-default
+        resources:
+          requests:
+            cpu: 500m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+        stackSpec:
+          inputs:
+            - dataset: dataos://icebase:supply_chain/inventory
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+                - failed rows:
+                    name: quantity_check
+                    fail condition: quantity_in_stock <= reorder_qty
+                    attributes:
+                      category: Completeness
+                      description: "To prevent stockouts, the quantity_in_stock should always be greater than or equal to the reorder_qty. This ensures that there is enough stock available before triggering a reorder. The inventory table shows some SKUs with low stock levels, indicating potential stockout risks."
+              profile:
+                columns:
+                  - "*"
+
+            - dataset: dataos://icebase:supply_chain/shipments
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+                - failed rows:
+                    name: order_fulfillment_date_check
+                    fail condition: order_fulfillment_date > expected_delivery_date
+                    attributes:
+                      category: Validity
+                      description: "This rule ensures that the order fulfillment date occurs before or on the expected delivery date. It is crucial for maintaining customer satisfaction and operational efficiency. Sample rows indicate that there are instances where this condition may not hold true."
+              profile:
+                columns:
+                  - "*"

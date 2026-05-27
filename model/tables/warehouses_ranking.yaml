@@ -2,22 +2,22 @@ tables:
   - name: warehouses_ranking
     title: Warehouses Ranking Data
     sql: {{ load_sql('warehouses_ranking') }}
-    description: Ranking and efficiency scores for warehouses.
+    description: Ranking data for warehouses based on efficiency scores.
     public: true
     dimensions:
       - name: warehouse_id
-        description: The unique identifier for the warehouse.
+        description: Unique identifier for the warehouse.
         type: number
         column: warehouse_id
         primary_key: true
         public: true
       - name: efficiency_score_pct
-        description: The efficiency score of the warehouse as a percentage.
+        description: Efficiency score percentage for the warehouse.
         type: number
         column: efficiency_score_pct
         public: true
       - name: efficiency_rank
-        description: The rank of the warehouse based on efficiency.
+        description: Rank of the warehouse based on efficiency.
         type: number
         column: efficiency_rank
         public: true

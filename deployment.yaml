@@ -1,16 +1,16 @@
-name: supply-chain-data-product
+name: unified-supply-chain-dp
 version: v1alpha
 type: lens
 tags:
   - Tier.Generated
   - SemanticModelAgent
 description: |
-  This supply chain data product provides stakeholders with a comprehensive view of inventory levels, warehouse performance, and fulfillment logistics, enabling proactive decision-making. By integrating data across various domains such as inventory, orders, and shipments, it facilitates real-time insights into stock availability and delivery reliability. The inclusion of geospatial analysis enhances lead-time assessments, allowing businesses to optimize their supply chain operations and improve customer satisfaction. This unified approach supports strategic planning and operational efficiency, ultimately driving better performance across the supply chain.
+  The unified Supply Chain data product provides stakeholders with a comprehensive view of inventory, warehouses, orders, and shipments, enabling more informed decision-making regarding logistics and resource allocation. By integrating geolocation data for both origins and destinations, this product enhances lead-time analysis, allowing businesses to optimize delivery routes and improve customer satisfaction. This holistic perspective supports strategic planning and operational efficiency across the supply chain, driving better performance and cost savings.
 workspace: public
 lens:
   compute: runnable-default
   secrets:
-    - name: gitsecret
+    - name: githubrepo
       allKeys: true
   source:
     type: minerva

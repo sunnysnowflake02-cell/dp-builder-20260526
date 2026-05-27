@@ -1,18 +1,8 @@
 version: v1
-lens: supply-chain-data-product
+lens: unified-supply-chain-dp
 description: Semantic join graph for this product. Each Lens SQL file remains a single-table SELECT; relationships below define
   how logical tables connect for analytics and validation.
 edges:
-- left_table: orders
-  right_table: shipments
-  left_fqn: icebase.supply_chain.orders
-  right_fqn: icebase.supply_chain.shipments
-  join_on:
-  - left: order_id
-    right: order_id
-  cardinality: one_to_many
-  id: 3539099f-a6d3-4d1c-b797-51391a89e2cb
-  rationale: Orders can have multiple shipments associated with them.
 - left_table: inventory
   right_table: warehouses
   left_fqn: icebase.supply_chain.inventory
@@ -20,19 +10,39 @@ edges:
   join_on:
   - left: warehouse_id
     right: warehouse_id
-  cardinality: one_to_many
-  id: fddc3733-5314-479b-ad29-a4dc645e2286
-  rationale: Each warehouse can hold multiple SKUs.
-- left_table: warehouses
+  cardinality: many_to_one
+  id: efa46031-0ae6-4706-b644-f96a2742c0a9
+  rationale: Join on warehouse_id to link inventory levels with warehouse details.
+- left_table: orders
   right_table: geolocation
-  left_fqn: icebase.supply_chain.warehouses
+  left_fqn: icebase.supply_chain.orders
   right_fqn: icebase.supply_chain.geolocation
   join_on:
   - left: zip_code
     right: zip_code
-  cardinality: one_to_one
-  id: 339d575b-078c-4f10-a247-a787e70e4a1c
-  rationale: Geolocation data is tied to warehouse zip codes.
+  cardinality: many_to_one
+  id: 697c2fa4-9450-42c4-aba1-a30a4027df77
+  rationale: Join on zip_code to map delivery addresses to geolocation data.
+- left_table: order_items
+  right_table: orders
+  left_fqn: icebase.supply_chain.order_items
+  right_fqn: icebase.supply_chain.orders
+  join_on:
+  - left: order_id
+    right: order_id
+  cardinality: many_to_one
+  id: d67663da-b932-462f-a5bc-8357b1a7f71e
+  rationale: Join on order_id to connect order items with their respective orders.
+- left_table: shipments
+  right_table: orders
+  left_fqn: icebase.supply_chain.shipments
+  right_fqn: icebase.supply_chain.orders
+  join_on:
+  - left: order_id
+    right: order_id
+  cardinality: many_to_one
+  id: 008b54fe-3d3a-4340-8b78-2ae9b60128d2
+  rationale: Join on order_id to link shipments with their corresponding orders.
 - left_table: shipments
   right_table: warehouses
   left_fqn: icebase.supply_chain.shipments
@@ -41,5 +51,5 @@ edges:
   - left: warehouse_id
     right: warehouse_id
   cardinality: many_to_one
-  id: b86c692b-3f6e-48ff-bad9-afff4315dfc7
-  rationale: Shipments originate from warehouses.
+  id: 606a5fbc-01da-4818-b258-8017cdffcd2a
+  rationale: Join on warehouse_id to associate shipments with the originating warehouse.

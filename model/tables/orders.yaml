@@ -2,12 +2,12 @@ tables:
   - name: orders
     title: Orders Data
     sql: {{ load_sql('orders') }}
-    description: Table containing order details including customer and delivery information.
+    description: Data regarding customer orders including delivery details.
     public: true
     joins:
-      - name: shipments
-        relationship: one_to_many
-        sql: "{TABLE.order_id} = {shipments.order_id}"
+      - name: geolocation
+        relationship: many_to_one
+        sql: "{TABLE.zip_code} = {geolocation.zip_code}"
     dimensions:
       - name: order_id
         description: Unique identifier for the order.
@@ -16,12 +16,12 @@ tables:
         primary_key: true
         public: true
       - name: order_creation_date
-        description: Date when the order was created.
+        description: Date and time when the order was created.
         type: time
         column: order_creation_date
         public: true
       - name: customer_id
-        description: Unique identifier for the customer placing the order.
+        description: Unique identifier for the customer who placed the order.
         type: number
         column: customer_id
         public: true

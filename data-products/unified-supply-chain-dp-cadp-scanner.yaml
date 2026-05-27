@@ -1,0 +1,26 @@
+version: v1
+name: wf-unified-supply-chain-dp-cadp-scanner
+type: workflow
+description: |
+  Scanner workflow for consumer-aligned data product unified-supply-chain-dp-cadp (metadata registration in DataOS).
+tags:
+  - Tier.Gold
+  - SemanticModelAgent
+workspace: public
+workflow:
+  dag:
+    - name: unified-supply-chain-dp-cadp-scanner
+      description: Scanner for unified-supply-chain-dp-cadp (data product metadata registration).
+      title: Unified Supply Chain Dp Cadp CADP scanner
+      spec:
+        stack: scanner:2.0
+        compute: runnable-default
+        stackSpec:
+          type: data-product
+          sourceConfig:
+            config:
+              type: DataProductMetadata
+              markDeletedDataProducts: true
+              dataProductFilterPattern:
+                includes:
+                  - unified-supply-chain-dp-cadp
