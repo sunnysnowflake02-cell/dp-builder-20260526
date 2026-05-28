@@ -1,11 +1,9 @@
 # Generated lens: us-nrc-test-dp
 
 ## Description
-This Lens aggregates data across exercise schedules, finding violations, and site locations to provide insights into device intelligence for enterprise laptop fleets.
-
 How approved tables connect:
+- icebase.us_nrc_data.finding_violations_data relates to icebase.us_nrc_data.site_location using site_name and site_name (relationship: many to one). Join on site_name to link violations with their respective locations.
 - icebase.us_nrc_data.finding_violations_data relates to icebase.us_nrc_data.exercise_schedule_data using site_name and facility (relationship: many to one).
-- icebase.us_nrc_data.finding_violations_data relates to icebase.us_nrc_data.site_location using site_name and site_name (relationship: many to one).
 
 ## Source references
 

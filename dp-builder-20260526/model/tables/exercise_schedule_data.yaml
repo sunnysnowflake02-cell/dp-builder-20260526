@@ -2,11 +2,13 @@ tables:
   - name: exercise_schedule_data
     title: Exercise Schedule Data
     sql: {{ load_sql('exercise_schedule_data') }}
-    description: Data related to exercise schedules including participants and locations.
+    description: |
+      Data related to scheduled exercises for nuclear facilities, including details about
+      participants and states involved.
     public: true
     dimensions:
       - name: exercise_start_date
-        description: The start date and time of the exercise.
+        description: The start date of the exercise.
         type: time
         column: exercise_start_date
         primary_key: true
@@ -22,7 +24,7 @@ tables:
         column: facility
         public: true
       - name: exercise_type
-        description: The type of exercise conducted.
+        description: The type of exercise being conducted.
         type: string
         column: exercise_type
         public: true
@@ -37,22 +39,52 @@ tables:
         column: participants_list
         public: true
       - name: exercise_date_2
-        description: Alternative exercise date.
+        description: An alternative date for the exercise.
         type: time
         column: exercise_date_2
         public: true
       - name: participant_count
-        description: Total number of participants in the exercise.
+        description: The number of participants in the exercise.
         type: number
         column: participant_count
         public: true
+      - name: participant_1
+        description: Name of the first participant.
+        type: string
+        column: participant_1
+        public: true
+      - name: participant_2
+        description: Name of the second participant.
+        type: string
+        column: participant_2
+        public: true
+      - name: participant_3
+        description: Name of the third participant.
+        type: string
+        column: participant_3
+        public: true
+      - name: participant_4
+        description: Name of the fourth participant.
+        type: string
+        column: participant_4
+        public: true
+      - name: participant_5
+        description: Name of the fifth participant.
+        type: string
+        column: participant_5
+        public: true
+      - name: participant_6
+        description: Name of the sixth participant.
+        type: string
+        column: participant_6
+        public: true
       - name: home_state
-        description: Home state of the participants.
+        description: The home state of the primary participant.
         type: string
         column: home_state
         public: true
       - name: co_hosting_state
-        description: Co-hosting state of the exercise.
+        description: The co-hosting state for the exercise.
         type: string
         column: co_hosting_state
         public: true
@@ -63,45 +95,9 @@ tables:
               includes:
                 - masking_redacted
       - name: co_hosting_state_2
-        description: Second co-hosting state of the exercise.
+        description: An additional co-hosting state for the exercise.
         type: string
         column: co_hosting_state_2
-        public: true
-        meta:
-          secure:
-            func: redact
-            user_groups:
-              includes:
-                - masking_redacted
-      - name: participant_1
-        description: Column participant_1 from the source table.
-        type: string
-        column: participant_1
-        public: true
-      - name: participant_2
-        description: Column participant_2 from the source table.
-        type: string
-        column: participant_2
-        public: true
-      - name: participant_3
-        description: Column participant_3 from the source table.
-        type: string
-        column: participant_3
-        public: true
-      - name: participant_4
-        description: Column participant_4 from the source table.
-        type: string
-        column: participant_4
-        public: true
-      - name: participant_5
-        description: Column participant_5 from the source table.
-        type: string
-        column: participant_5
-        public: true
-      - name: participant_6
-        description: Column participant_6 from the source table.
-        type: string
-        column: participant_6
         public: true
     measures:
       - name: row_count
@@ -116,3 +112,11 @@ tables:
         description: Average of participant count for rows in this grain.
         type: avg
         sql: "{TABLE.participant_count}"
+    segments:
+      - name: reactor_region_iv
+        sql: "{TABLE}.region = 'IV'"
+        meta:
+          secure:
+            user_groups:
+              includes:
+                - reactor_safety_region_iv

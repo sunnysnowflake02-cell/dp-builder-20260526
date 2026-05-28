@@ -7,7 +7,7 @@ user_groups:
       - jobs
       - source
     includes: '*'
-  - name: device_fleet_analysts
+  - name: reactor_safety_region_iv
     api_scopes:
       - meta
       - data
@@ -15,9 +15,9 @@ user_groups:
       - jobs
       - source
     includes:
-      - users:id:device_analyst_1
-      - users:id:device_analyst_2
-  - name: warranty_claim_reviewers
+      - users:id:reactor_user_1
+      - users:id:reactor_user_2
+  - name: violation_inspection_auditor
     api_scopes:
       - meta
       - data
@@ -25,9 +25,9 @@ user_groups:
       - jobs
       - source
     includes:
-      - users:id:warranty_reviewer_1
-      - users:id:warranty_reviewer_2
-  - name: performance_monitoring_specialists
+      - users:id:auditor_user_1
+      - users:id:auditor_user_2
+  - name: exercise_participant_manager
     api_scopes:
       - meta
       - data
@@ -35,5 +35,5 @@ user_groups:
       - jobs
       - source
     includes:
-      - users:id:performance_specialist_1
-      - users:id:performance_specialist_2
+      - users:id:manager_user_1
+      - users:id:manager_user_2

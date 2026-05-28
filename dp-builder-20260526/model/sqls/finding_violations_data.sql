@@ -15,7 +15,7 @@ SELECT
   "cross_cutting_aspect" AS cross_cutting_aspect,
   "idby" AS idby,
   CAST("region" AS DOUBLE) AS region,
-  TRY_CAST("accession_number" AS DOUBLE) AS accession_number,
+  "accession_number" AS accession_number,
   "is_traditional_enforcement" AS is_traditional_enforcement,
   "item_severity_type_code" AS item_severity_type_code,
   TRY_CAST(TRIM("cornerstone_attribute_type") AS TIMESTAMP(6)) AS cornerstone_attribute_type,

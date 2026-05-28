@@ -38,19 +38,12 @@ workflow:
                       category: Freshness
                       description: "Table must have data"
                 - failed rows:
-                    name: exercise_start_date_not_future
-                    fail condition: |
-                      TRY_CAST(exercise_start_date AS DATE) > CURRENT_DATE
-                    attributes:
-                      category: Validity
-                      description: "The column 'exercise_start_date' should only contain past or present dates to maintain data integrity. The sample data shows future dates, with the most recent being '2026-09-22', indicating a potential issue with the data entry or extraction process."
-                - failed rows:
                     name: participant_count_positive
                     fail condition: |
                       TRY_CAST(participant_count AS DOUBLE) <= 0
                     attributes:
                       category: Completeness
-                      description: "The 'participant_count' column should reflect the actual number of participants. Sample rows indicate that participant counts are consistently set to 2, but any zero values would indicate an error in data collection."
+                      description: "The 'participant_count' in the exercise_schedule_data table should always be greater than zero to ensure that exercises are being conducted with actual participants. The current sample shows valid counts, but this rule enforces ongoing data quality."
               profile:
                 columns:
                   - "*"
@@ -65,12 +58,12 @@ workflow:
                       category: Freshness
                       description: "Table must have data"
                 - failed rows:
-                    name: unique_report_number
+                    name: issue_date_not_future
                     fail condition: |
-                      report_number IN (SELECT report_number FROM icebase.us_nrc_data.finding_violations_data GROUP BY report_number HAVING COUNT(*) > 1)
+                      TRY_CAST(issue_date AS DATE) > CURRENT_DATE
                     attributes:
-                      category: Uniqueness
-                      description: "The 'report_number' field should be unique for each violation entry to prevent data duplication. The sample data shows a report number of 2024004 appearing multiple times, which may indicate a data integrity issue."
+                      category: Validity
+                      description: "The 'issue_date' column in the finding_violations_data table must not contain future dates, as this would indicate a reporting error. The current profiling indicates that all observed dates are in the past, but this check ensures data integrity moving forward."
               profile:
                 columns:
                   - "*"
@@ -84,6 +77,13 @@ workflow:
                     attributes:
                       category: Freshness
                       description: "Table must have data"
+                - failed rows:
+                    name: latitude_longitude_validity
+                    fail condition: |
+                      TRY_CAST(latitude AS DOUBLE) < -90 OR TRY_CAST(latitude AS DOUBLE) > 90 OR TRY_CAST(longitude AS DOUBLE) < -180 OR TRY_CAST(longitude AS DOUBLE) > 180
+                    attributes:
+                      category: Validity
+                      description: "The 'latitude' and 'longitude' columns in the site_location table must fall within valid geographical ranges. Latitude should be between -90 and 90, and longitude between -180 and 180, ensuring accurate site mapping. Current data appears valid, but this rule is crucial for geographic integrity."
               profile:
                 columns:
                   - "*"

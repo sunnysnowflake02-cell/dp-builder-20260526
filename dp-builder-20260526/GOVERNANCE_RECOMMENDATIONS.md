@@ -1,31 +1,32 @@
 ## Governance context
 
-This data product implements row-level security to protect sensitive customer identifiers and endpoint information. Non-privileged consumers will not have access to raw customer data, ensuring compliance with data privacy standards. The governance mode is mixed, employing both masking for sensitive dimensions and segment security to manage access to specific data slices based on user roles.
+This data product employs row-level segment security for managing access to sensitive nuclear safety information, particularly regarding inspection histories and risk exposure. The segments are defined based on distinct operational regions and facility types, ensuring that only authorized user groups can access specific data slices. Additionally, sensitive dimensions may be subject to transformation or masking to protect personally identifiable information (PII).
 
 ## Sample user groups & YAML
 
 ```yaml
 segments:
-  - name: active_devices_by_region
-    sql: "{TABLE}.region IS NOT NULL"
+  - name: reactor_region_iv
+    sql: "{TABLE}.region = 'IV'"
     meta:
       secure:
         user_groups:
           includes:
-            - device_fleet_analysts
+            - reactor_safety_region_iv
+
 user_groups:
-  device_fleet_analysts:
+  reactor_safety_region_iv:
     api_scopes:
       - read
     includes:
-      - users:id:device_analyst_1
-      - users:id:device_analyst_2
+      - users:id:reactor_user_1
+      - users:id:reactor_user_2
 ```
 
 ## Suggested mode
 
-`mixed`
+`segment_user_groups`
 
 ## Role names (reuse in user_groups + segments)
 
-`device_fleet_analysts`, `warranty_claim_reviewers`, `performance_monitoring_specialists`
+`reactor_safety_region_iv`, `violation_inspection_auditor`, `exercise_participant_manager`

@@ -5,7 +5,7 @@ tags:
   - Tier.Generated
   - SemanticModelAgent
 description: |
-  This deployment manifest provides a comprehensive view of enterprise laptop fleets, focusing on critical dimensions such as customer context, device performance, and network connectivity. Stakeholders will gain insights into device health, early warning signals for potential failures, and overall fleet stability, enabling informed decisions on resource allocation and remediation priorities. By emphasizing key performance indicators related to device telemetry and service analytics, this product supports proactive management of device issues while ensuring sensitive information is appropriately protected.
+  This deployment manifest provides stakeholders with a comprehensive view of nuclear safety and facility intelligence, integrating various reactor data, risk profiles, and inspection histories into a centralized system. By transitioning to an automated Nuclear Regulatory Control Tower, organizations can enhance their ability to track risk exposure, standardize public data, and make informed, timely decisions regarding safety. This lens is essential for regulatory bodies, facility managers, and safety analysts, as it supports proactive monitoring and improves overall safety management in the nuclear sector.
 layer: user
 owner: manpreetsingh
 workspace: public

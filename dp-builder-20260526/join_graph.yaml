@@ -4,15 +4,6 @@ description: Semantic join graph for this product. Each Lens SQL file remains a 
   how logical tables connect for analytics and validation.
 edges:
 - left_table: finding_violations_data
-  right_table: exercise_schedule_data
-  left_fqn: icebase.us_nrc_data.finding_violations_data
-  right_fqn: icebase.us_nrc_data.exercise_schedule_data
-  join_on:
-  - left: site_name
-    right: facility
-  cardinality: many_to_one
-  id: new-1779952433179-x1au0o
-- left_table: finding_violations_data
   right_table: site_location
   left_fqn: icebase.us_nrc_data.finding_violations_data
   right_fqn: icebase.us_nrc_data.site_location
@@ -20,4 +11,14 @@ edges:
   - left: site_name
     right: site_name
   cardinality: many_to_one
-  id: new-1779952460178-p4l017
+  id: 47e33aca-9894-4f4c-ae2f-01c713607636
+  rationale: Join on site_name to link violations with their respective locations.
+- left_table: finding_violations_data
+  right_table: exercise_schedule_data
+  left_fqn: icebase.us_nrc_data.finding_violations_data
+  right_fqn: icebase.us_nrc_data.exercise_schedule_data
+  join_on:
+  - left: site_name
+    right: facility
+  cardinality: many_to_one
+  id: new-1779954811247-ixkq4r

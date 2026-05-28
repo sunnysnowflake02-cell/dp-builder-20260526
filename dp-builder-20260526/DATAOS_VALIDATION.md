@@ -15,10 +15,10 @@
 **Overall:** PASS
 
 ## Join graph
-All edges connect approved tables. Relationships are many-to-one and use the same schema (icebase.us_nrc_data).
+All join edges connect approved tables. The join columns (site_name) exist on both sides, and the relationships are consistent with many-to-one cardinality. No schema spanning issues detected.
 
 ## SQL / Lens YAML
-All SQL references use load_sql(logical_name) correctly. Dimension types are valid and conform to the expected types: boolean, number, string, time.
+All SQL references use load_sql(logical_name) correctly. The SQL files are expected to be Trino-flavored. Dimension types in the JSON summary are valid and conform to the allowed types: string, number, time, boolean.
 
 ## Consumer data product YAML
-The consumer YAML references the lens name consistently and lists approved source FQNs sensibly.
+The consumer data product YAML references the lens name 'us-nrc-test-dp' consistently and lists approved source FQNs sensibly.
