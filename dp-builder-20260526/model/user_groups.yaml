@@ -1,0 +1,29 @@
+user_groups:
+  - name: masking_redacted
+    api_scopes:
+      - meta
+      - data
+      - graphql
+      - jobs
+      - source
+    includes: '*'
+  - name: retail_customer_data_access
+    api_scopes:
+      - meta
+      - data
+      - graphql
+      - jobs
+      - source
+    includes:
+      - users:id:retail_user_1
+      - users:id:retail_user_2
+  - name: enterprise_customer_data_access
+    api_scopes:
+      - meta
+      - data
+      - graphql
+      - jobs
+      - source
+    includes:
+      - users:id:enterprise_user_1
+      - users:id:enterprise_user_2

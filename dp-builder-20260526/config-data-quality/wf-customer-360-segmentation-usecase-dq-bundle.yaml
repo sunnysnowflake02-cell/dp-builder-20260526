@@ -1,0 +1,102 @@
+name: wf-customer-360-segmentation-usecase-dq-bundle
+version: v1
+type: workflow
+tags:
+  - Quality.BusinessRule
+  - Tier.Generated
+  - SemanticModelAgent
+description: |
+  Consolidated business-rule data quality checks for this lens. One workflow;
+  multiple source datasets under stackSpec.inputs.
+workspace: public
+workflow:
+  dag:
+    - name: customer-360-segmentation-usecase-dq-bundle
+      description: |
+        Consolidated DQ checks for approved steward rules (multi-table).
+      title: Consolidated business validation checks
+      spec:
+        stack: soda+python:1.0
+        logLevel: INFO
+        compute: runnable-default
+        resources:
+          requests:
+            cpu: 500m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+        stackSpec:
+          inputs:
+            - dataset: dataos://icebase:customer_segmentation/customer_behavioral_aggregates
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+                - failed rows:
+                    name: customer_id_referential_integrity
+                    fail condition: |
+                      customer_id IS NULL OR customer_id NOT IN (SELECT customer_id FROM dataos://icebase:customer_segmentation/customer_dimension)
+                    attributes:
+                      category: Consistency
+                      description: "To maintain referential integrity, every 'customer_id' in the customer_behavioral_aggregates table must correspond to an existing 'customer_id' in the customer_dimension table. This relationship is crucial for accurate customer insights and analytics."
+              profile:
+                columns:
+                  - "*"
+
+            - dataset: dataos://icebase:customer_segmentation/product_dimension
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+                - failed rows:
+                    name: valid_price_band
+                    fail condition: |
+                      price_band NOT IN ('budget', 'mid-range', 'premium')
+                    attributes:
+                      category: Validity
+                      description: "The 'price_band' in the product_dimension table should only contain values from the allowed set of categories (e.g., 'budget', 'mid-range', 'premium'). This ensures consistency in the pricing strategy and aids in effective market segmentation."
+              profile:
+                columns:
+                  - "*"
+
+            - dataset: dataos://icebase:customer_segmentation/transaction_fact
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+                - failed rows:
+                    name: transaction_date_not_future
+                    fail condition: |
+                      TRY_CAST(transaction_date AS DATE) > CURRENT_DATE
+                    attributes:
+                      category: Validity
+                      description: "The 'transaction_date' column in the transaction_fact table should not contain future dates, as this indicates invalid data entries. The column profiles suggest a range of past transaction dates, and ensuring this validation helps maintain data integrity."
+              profile:
+                columns:
+                  - "*"
+
+            - dataset: dataos://icebase:customer_segmentation/customer_dimension
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+              profile:
+                columns:
+                  - "*"

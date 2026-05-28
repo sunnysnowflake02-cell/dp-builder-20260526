@@ -1,0 +1,116 @@
+name: customer-360-segmentation-usecase-cadp
+version: v1beta
+entity: product
+type: data
+purpose: |
+  Build a Customer 360 data product for the Mars snacking business unit.
+tags:
+  - DPTier.Consumer Aligned
+  - SemanticModelAgent
+description: |
+  Build a Customer 360 data product for the Mars snacking business unit.
+
+owner: dataos-owner
+
+v1beta:
+  data:
+    meta:
+      title: Customer 360 Segmentation Usecase
+      sourceCodeUrl: "https://github.com/your-org/your-repo/tree/main/semantic-model"
+    collaborators:
+      - name: dataos-owner
+        description: owner
+
+    resource:
+      description: |
+        This product helps teams track outcomes, spot issues early, and align decisions for Build a Customer 360 data product for the Mars snacking business unit.
+        
+        It packages steward-approved sources into one consistent analytic view so everyone works from the same definitions for metrics and dimensions.
+        
+        Technical validation and deployment notes are included in the bundle for platform operators.
+      type: bundle
+      version: v1beta
+      refType: dataos
+      ref: bundle:v1beta:customer-360-segmentation-usecase-bundle
+
+    inputs:
+      - name: icebase_customer_segmentation_cs_ml_segment_assignment_resource_input
+        description: |
+          Operational data describing cs ml segment assignment resource in the customer segmentation area. Supports shared reporting and analytics for this product.
+        purpose: source
+        refType: dataos
+        ref: dataos://icebase:customer_segmentation/cs_ml_segment_assignment_resource
+
+      - name: icebase_customer_segmentation_cs_ml_segment_definition_resource_input
+        description: |
+          Operational data describing cs ml segment definition resource in the customer segmentation area. Supports shared reporting and analytics for this product.
+        purpose: source
+        refType: dataos
+        ref: dataos://icebase:customer_segmentation/cs_ml_segment_definition_resource
+
+      - name: icebase_customer_segmentation_customer_behavioral_aggregates_input
+        description: |
+          Operational data describing customer behavioral aggregates in the customer segmentation area. Supports shared reporting and analytics for this product.
+        purpose: source
+        refType: dataos
+        ref: dataos://icebase:customer_segmentation/customer_behavioral_aggregates
+
+      - name: icebase_customer_segmentation_customer_dimension_input
+        description: |
+          Operational data describing customer dimension in the customer segmentation area. Supports shared reporting and analytics for this product.
+        purpose: source
+        refType: dataos
+        ref: dataos://icebase:customer_segmentation/customer_dimension
+
+      - name: icebase_customer_segmentation_interaction_fact_input
+        description: |
+          Operational data describing interaction fact in the customer segmentation area. Supports shared reporting and analytics for this product.
+        purpose: source
+        refType: dataos
+        ref: dataos://icebase:customer_segmentation/interaction_fact
+
+      - name: icebase_customer_segmentation_product_dimension_input
+        description: |
+          Operational data describing product dimension in the customer segmentation area. Supports shared reporting and analytics for this product.
+        purpose: source
+        refType: dataos
+        ref: dataos://icebase:customer_segmentation/product_dimension
+
+      - name: icebase_customer_segmentation_transaction_fact_input
+        description: |
+          Operational data describing transaction fact in the customer segmentation area. Supports shared reporting and analytics for this product.
+        purpose: source
+        refType: dataos
+        ref: dataos://icebase:customer_segmentation/transaction_fact
+
+    outputs: []
+
+    ports:
+      lens:
+        ref: lens:v1alpha:customer-360-segmentation-usecase:public
+        refType: dataos
+        meta:
+          title: Customer 360 Segmentation Usecase — curated definitions
+          description: |
+            Shared metrics and dimensions for governed analytics in this domain.
+      rest:
+        - url: https://gateway.dataos.example/lens2/api/public:customer-360-segmentation-usecase/v2/rest
+          meta:
+            title: REST API
+            description: |
+              Application-friendly access for dashboards, services, and automation.
+      postgres:
+        - host: tcp.gateway.dataos.example
+          port: 5432
+          params:
+            ssl: true
+          meta:
+            title: PostgreSQL endpoint
+            description: |
+              SQL access for BI and analytics tools.
+      graphql:
+        - url: https://gateway.dataos.example/lens2/api/public:customer-360-segmentation-usecase/v2/graphql
+          meta:
+            title: GraphQL API
+            description: |
+              Flexible query access for applications that need curated views of this product.

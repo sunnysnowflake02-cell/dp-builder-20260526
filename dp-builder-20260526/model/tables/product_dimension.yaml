@@ -1,0 +1,61 @@
+tables:
+  - name: product_dimension
+    title: Product Dimension
+    sql: {{ load_sql('product_dimension') }}
+    description: This table contains information about products including categories and pricing.
+    public: true
+    dimensions:
+      - name: product_id
+        description: Unique identifier for the product.
+        type: string
+        column: product_id
+        primary_key: true
+        public: true
+      - name: category
+        description: Category of the product.
+        type: string
+        column: category
+        public: true
+      - name: subcategory
+        description: Subcategory of the product.
+        type: string
+        column: subcategory
+        public: true
+      - name: brand
+        description: Brand of the product.
+        type: string
+        column: brand
+        public: true
+      - name: price_band
+        description: Price band of the product.
+        type: number
+        column: price_band
+        public: true
+      - name: name
+        description: Name of the product.
+        type: string
+        column: name
+        public: true
+      - name: created_at
+        description: Timestamp when the record was created.
+        type: time
+        column: created_at
+        public: true
+      - name: ingestion_date
+        description: Timestamp when the record was ingested.
+        type: time
+        column: ingestion_date
+        public: true
+    measures:
+      - name: row_count
+        description: Distinct rows at natural grain (count distinct on primary key column).
+        type: count
+        sql: "{TABLE.product_id}"
+      - name: sum_price_band
+        description: Sum of price band for rows in this grain.
+        type: sum
+        sql: "{TABLE.price_band}"
+      - name: avg_price_band
+        description: Average of price band for rows in this grain.
+        type: avg
+        sql: "{TABLE.price_band}"
