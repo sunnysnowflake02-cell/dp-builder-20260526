@@ -1,11 +1,11 @@
-name: customer-360-segmentation-usecase
+name: us-nrc-test-dp
 version: v1alpha
 type: lens
 tags:
   - Tier.Generated
   - SemanticModelAgent
 description: |
-  The Customer 360 Segmentation lens provides stakeholders with a comprehensive view of customer demographics, purchase behaviors, brand preferences, and channel engagement specifically for the Mars snacking business unit. This semantic view enables effective segmentation of enterprise and retail customers, allowing for targeted marketing strategies and improved customer engagement. By adhering to governance policies that protect sensitive information, decision-makers can confidently analyze customer data while ensuring compliance and privacy. This lens is essential for driving data-informed decisions that enhance customer relationships and optimize marketing efforts.
+  This deployment manifest provides a comprehensive view of enterprise laptop fleets, focusing on critical dimensions such as customer context, device performance, and network connectivity. Stakeholders will gain insights into device health, early warning signals for potential failures, and overall fleet stability, enabling informed decisions on resource allocation and remediation priorities. By emphasizing key performance indicators related to device telemetry and service analytics, this product supports proactive management of device issues while ensuring sensitive information is appropriately protected.
 layer: user
 owner: manpreetsingh
 workspace: public

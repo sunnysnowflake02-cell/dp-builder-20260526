@@ -1,0 +1,118 @@
+tables:
+  - name: exercise_schedule_data
+    title: Exercise Schedule Data
+    sql: {{ load_sql('exercise_schedule_data') }}
+    description: Data related to exercise schedules including participants and locations.
+    public: true
+    dimensions:
+      - name: exercise_start_date
+        description: The start date and time of the exercise.
+        type: time
+        column: exercise_start_date
+        primary_key: true
+        public: true
+      - name: region
+        description: The region where the exercise is conducted.
+        type: string
+        column: region
+        public: true
+      - name: facility
+        description: The facility where the exercise takes place.
+        type: string
+        column: facility
+        public: true
+      - name: exercise_type
+        description: The type of exercise conducted.
+        type: string
+        column: exercise_type
+        public: true
+      - name: states_list
+        description: List of states participating in the exercise.
+        type: string
+        column: states_list
+        public: true
+      - name: participants_list
+        description: List of participants involved in the exercise.
+        type: string
+        column: participants_list
+        public: true
+      - name: exercise_date_2
+        description: Alternative exercise date.
+        type: time
+        column: exercise_date_2
+        public: true
+      - name: participant_count
+        description: Total number of participants in the exercise.
+        type: number
+        column: participant_count
+        public: true
+      - name: home_state
+        description: Home state of the participants.
+        type: string
+        column: home_state
+        public: true
+      - name: co_hosting_state
+        description: Co-hosting state of the exercise.
+        type: string
+        column: co_hosting_state
+        public: true
+        meta:
+          secure:
+            func: redact
+            user_groups:
+              includes:
+                - masking_redacted
+      - name: co_hosting_state_2
+        description: Second co-hosting state of the exercise.
+        type: string
+        column: co_hosting_state_2
+        public: true
+        meta:
+          secure:
+            func: redact
+            user_groups:
+              includes:
+                - masking_redacted
+      - name: participant_1
+        description: Column participant_1 from the source table.
+        type: string
+        column: participant_1
+        public: true
+      - name: participant_2
+        description: Column participant_2 from the source table.
+        type: string
+        column: participant_2
+        public: true
+      - name: participant_3
+        description: Column participant_3 from the source table.
+        type: string
+        column: participant_3
+        public: true
+      - name: participant_4
+        description: Column participant_4 from the source table.
+        type: string
+        column: participant_4
+        public: true
+      - name: participant_5
+        description: Column participant_5 from the source table.
+        type: string
+        column: participant_5
+        public: true
+      - name: participant_6
+        description: Column participant_6 from the source table.
+        type: string
+        column: participant_6
+        public: true
+    measures:
+      - name: row_count
+        description: Distinct rows at natural grain (count distinct on primary key column).
+        type: count
+        sql: "{TABLE.exercise_start_date}"
+      - name: sum_participant_count
+        description: Sum of participant count for rows in this grain.
+        type: sum
+        sql: "{TABLE.participant_count}"
+      - name: avg_participant_count
+        description: Average of participant count for rows in this grain.
+        type: avg
+        sql: "{TABLE.participant_count}"

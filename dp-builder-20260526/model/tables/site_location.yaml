@@ -1,0 +1,28 @@
+tables:
+  - name: site_location
+    title: Site Location
+    sql: {{ load_sql('site_location') }}
+    description: Geographical data of sites including latitude and longitude.
+    public: true
+    dimensions:
+      - name: site_name
+        description: Name of the site.
+        type: string
+        column: site_name
+        primary_key: true
+        public: true
+      - name: latitude
+        description: Latitude of the site location.
+        type: number
+        column: latitude
+        public: true
+      - name: longitude
+        description: Longitude of the site location.
+        type: number
+        column: longitude
+        public: true
+    measures:
+      - name: row_count
+        description: Distinct rows at natural grain (count distinct on primary key column).
+        type: count
+        sql: "{TABLE.site_name}"

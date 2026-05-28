@@ -1,26 +1,25 @@
 ## Governance context
 
-This data product implements governance policies to ensure sensitive information is masked for non-privileged users. Columns containing personal identifiable information (PII) will be transformed using dimension masking, while row-level security will be enforced through segment definitions that filter data access based on user roles. This approach ensures compliance with data privacy standards while enabling effective data utilization for customer insights.
+This data product implements row-level security to protect sensitive customer identifiers and endpoint information. Non-privileged consumers will not have access to raw customer data, ensuring compliance with data privacy standards. The governance mode is mixed, employing both masking for sensitive dimensions and segment security to manage access to specific data slices based on user roles.
 
 ## Sample user groups & YAML
 
 ```yaml
 segments:
-  - name: retail_customers
-    sql: "{TABLE}.customer_type = 'B2C'"
+  - name: active_devices_by_region
+    sql: "{TABLE}.region IS NOT NULL"
     meta:
       secure:
         user_groups:
           includes:
-            - retail_customer_data_access
-
+            - device_fleet_analysts
 user_groups:
-  retail_customer_data_access:
+  device_fleet_analysts:
     api_scopes:
       - read
     includes:
-      - users:id:retail_user_1
-      - users:id:retail_user_2
+      - users:id:device_analyst_1
+      - users:id:device_analyst_2
 ```
 
 ## Suggested mode
@@ -29,4 +28,4 @@ user_groups:
 
 ## Role names (reuse in user_groups + segments)
 
-`retail_customer_data_access`, `enterprise_customer_data_access`
+`device_fleet_analysts`, `warranty_claim_reviewers`, `performance_monitoring_specialists`

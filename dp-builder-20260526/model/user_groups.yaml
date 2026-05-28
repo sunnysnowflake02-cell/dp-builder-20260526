@@ -7,7 +7,7 @@ user_groups:
       - jobs
       - source
     includes: '*'
-  - name: retail_customer_data_access
+  - name: device_fleet_analysts
     api_scopes:
       - meta
       - data
@@ -15,9 +15,9 @@ user_groups:
       - jobs
       - source
     includes:
-      - users:id:retail_user_1
-      - users:id:retail_user_2
-  - name: enterprise_customer_data_access
+      - users:id:device_analyst_1
+      - users:id:device_analyst_2
+  - name: warranty_claim_reviewers
     api_scopes:
       - meta
       - data
@@ -25,5 +25,15 @@ user_groups:
       - jobs
       - source
     includes:
-      - users:id:enterprise_user_1
-      - users:id:enterprise_user_2
+      - users:id:warranty_reviewer_1
+      - users:id:warranty_reviewer_2
+  - name: performance_monitoring_specialists
+    api_scopes:
+      - meta
+      - data
+      - graphql
+      - jobs
+      - source
+    includes:
+      - users:id:performance_specialist_1
+      - users:id:performance_specialist_2

@@ -1,0 +1,137 @@
+tables:
+  - name: finding_violations_data
+    title: Finding Violations Data
+    sql: {{ load_sql('finding_violations_data') }}
+    description: |
+      Data related to violations found during inspections, including severity and reporting
+      details.
+    public: true
+    joins:
+      - name: exercise_schedule_data
+        relationship: many_to_one
+        sql: "{TABLE.site_name} = {exercise_schedule_data.facility}"
+      - name: site_location
+        relationship: many_to_one
+        sql: "{TABLE.site_name} = {site_location.site_name}"
+    dimensions:
+      - name: procedure
+        description: The procedure under which the violation was found.
+        type: string
+        column: procedure
+        primary_key: true
+        public: true
+      - name: issue_date
+        description: The date when the violation was reported.
+        type: time
+        column: issue_date
+        public: true
+      - name: report_number
+        description: The report number associated with the violation.
+        type: number
+        column: report_number
+        public: true
+      - name: type
+        description: Type of violation found.
+        type: string
+        column: type
+        public: true
+      - name: cornerstone_code
+        description: Code associated with the cornerstone of the violation.
+        type: string
+        column: cornerstone_code
+        public: true
+      - name: cornerstone
+        description: Cornerstone related to the violation.
+        type: string
+        column: cornerstone
+        public: true
+      - name: title
+        description: Title of the violation report.
+        type: string
+        column: title
+        public: true
+      - name: docket_number
+        description: Docket number for the violation.
+        type: string
+        column: docket_number
+        public: true
+      - name: site_name
+        description: Name of the site where the violation occurred.
+        type: string
+        column: site_name
+        public: true
+      - name: site_code
+        description: Code for the site where the violation occurred.
+        type: string
+        column: site_code
+        public: true
+      - name: cross_cutting_aspect
+        description: Aspect of the violation that cuts across multiple areas.
+        type: string
+        column: cross_cutting_aspect
+        public: true
+      - name: idby
+        description: Identifier for the person who reported the violation.
+        type: string
+        column: idby
+        public: true
+      - name: region
+        description: Region where the violation was found.
+        type: number
+        column: region
+        public: true
+      - name: accession_number
+        description: Accession number for the violation report.
+        type: number
+        column: accession_number
+        public: true
+      - name: is_traditional_enforcement
+        description: Indicates if traditional enforcement was applied.
+        type: boolean
+        column: is_traditional_enforcement
+        public: true
+      - name: item_severity_type_code
+        description: Severity type code of the violation item.
+        type: string
+        column: item_severity_type_code
+        public: true
+      - name: cornerstone_attribute_type
+        description: Attribute type related to the cornerstone.
+        type: time
+        column: cornerstone_attribute_type
+        public: true
+      - name: link
+        description: Link to more information about the violation.
+        type: string
+        column: link
+        public: true
+      - name: year
+        description: Year when the violation was reported.
+        type: number
+        column: year
+        public: true
+      - name: quarter
+        description: Quarter of the year when the violation was reported.
+        type: number
+        column: quarter
+        public: true
+      - name: cross_cutting_area
+        description: Area related to the cross-cutting aspect of the violation.
+        type: string
+        column: cross_cutting_area
+        public: true
+      - name: significance
+        description: Significance of the violation.
+        type: string
+        column: significance
+        public: true
+      - name: significance_sort
+        description: Sorting value for significance of the violation.
+        type: number
+        column: significance_sort
+        public: true
+    measures:
+      - name: row_count
+        description: Distinct rows at natural grain (count distinct on primary key column).
+        type: count
+        sql: "{TABLE.procedure}"

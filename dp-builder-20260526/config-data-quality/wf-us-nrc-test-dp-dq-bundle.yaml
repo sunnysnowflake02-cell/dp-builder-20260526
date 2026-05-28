@@ -1,0 +1,89 @@
+name: wf-us-nrc-test-dp-dq-bundle
+version: v1
+type: workflow
+tags:
+  - Quality.BusinessRule
+  - Tier.Generated
+  - SemanticModelAgent
+description: |
+  Consolidated business-rule data quality checks for this lens. One workflow;
+  multiple source datasets under stackSpec.inputs.
+workspace: public
+workflow:
+  dag:
+    - name: us-nrc-test-dp-dq-bundle
+      description: |
+        Consolidated DQ checks for approved steward rules (multi-table).
+      title: Consolidated business validation checks
+      spec:
+        stack: soda+python:1.0
+        logLevel: INFO
+        compute: runnable-default
+        resources:
+          requests:
+            cpu: 500m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+        stackSpec:
+          inputs:
+            - dataset: dataos://icebase:us_nrc_data/exercise_schedule_data
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+                - failed rows:
+                    name: exercise_start_date_not_future
+                    fail condition: |
+                      TRY_CAST(exercise_start_date AS DATE) > CURRENT_DATE
+                    attributes:
+                      category: Validity
+                      description: "The column 'exercise_start_date' should only contain past or present dates to maintain data integrity. The sample data shows future dates, with the most recent being '2026-09-22', indicating a potential issue with the data entry or extraction process."
+                - failed rows:
+                    name: participant_count_positive
+                    fail condition: |
+                      TRY_CAST(participant_count AS DOUBLE) <= 0
+                    attributes:
+                      category: Completeness
+                      description: "The 'participant_count' column should reflect the actual number of participants. Sample rows indicate that participant counts are consistently set to 2, but any zero values would indicate an error in data collection."
+              profile:
+                columns:
+                  - "*"
+
+            - dataset: dataos://icebase:us_nrc_data/finding_violations_data
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+                - failed rows:
+                    name: unique_report_number
+                    fail condition: |
+                      report_number IN (SELECT report_number FROM icebase.us_nrc_data.finding_violations_data GROUP BY report_number HAVING COUNT(*) > 1)
+                    attributes:
+                      category: Uniqueness
+                      description: "The 'report_number' field should be unique for each violation entry to prevent data duplication. The sample data shows a report number of 2024004 appearing multiple times, which may indicate a data integrity issue."
+              profile:
+                columns:
+                  - "*"
+
+            - dataset: dataos://icebase:us_nrc_data/site_location
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+              profile:
+                columns:
+                  - "*"

@@ -1,21 +1,17 @@
-# Generated lens: customer-360-segmentation-usecase
+# Generated lens: us-nrc-test-dp
 
 ## Description
-This lens integrates customer demographics, purchase history, brand preferences, and channel engagement to provide a comprehensive view of customer behavior and segmentation.
+This Lens aggregates data across exercise schedules, finding violations, and site locations to provide insights into device intelligence for enterprise laptop fleets.
 
 How approved tables connect:
-- icebase.customer_segmentation.customer_dimension relates to icebase.customer_segmentation.customer_behavioral_aggregates using customer_id and customer_id (relationship: one to one). Join customer dimensions to behavioral aggregates for comprehensive insights.
-- icebase.customer_segmentation.cs_ml_segment_definition_resource relates to icebase.customer_segmentation.cs_ml_segment_assignment_resource using segment_id and segment_id (relationship: many to one).
+- icebase.us_nrc_data.finding_violations_data relates to icebase.us_nrc_data.exercise_schedule_data using site_name and facility (relationship: many to one).
+- icebase.us_nrc_data.finding_violations_data relates to icebase.us_nrc_data.site_location using site_name and site_name (relationship: many to one).
 
 ## Source references
 
-- `icebase.customer_segmentation.cs_ml_segment_assignment_resource`: https://known-racer.mydataos.com/metis/assets/table/icebase.icebase.customer_segmentation.cs_ml_segment_assignment_resource
-- `icebase.customer_segmentation.cs_ml_segment_definition_resource`: https://known-racer.mydataos.com/metis/assets/table/icebase.icebase.customer_segmentation.cs_ml_segment_definition_resource
-- `icebase.customer_segmentation.customer_behavioral_aggregates`: https://known-racer.mydataos.com/metis/assets/table/icebase.icebase.customer_segmentation.customer_behavioral_aggregates
-- `icebase.customer_segmentation.customer_dimension`: https://known-racer.mydataos.com/metis/assets/table/icebase.icebase.customer_segmentation.customer_dimension
-- `icebase.customer_segmentation.interaction_fact`: https://known-racer.mydataos.com/metis/assets/table/icebase.icebase.customer_segmentation.interaction_fact
-- `icebase.customer_segmentation.product_dimension`: https://known-racer.mydataos.com/metis/assets/table/icebase.icebase.customer_segmentation.product_dimension
-- `icebase.customer_segmentation.transaction_fact`: https://known-racer.mydataos.com/metis/assets/table/icebase.icebase.customer_segmentation.transaction_fact
+- `icebase.us_nrc_data.exercise_schedule_data`: https://paper-plane.mydataos.com/metis/assets/table/icebase.icebase.us_nrc_data.exercise_schedule_data
+- `icebase.us_nrc_data.finding_violations_data`: https://paper-plane.mydataos.com/metis/assets/table/icebase.icebase.us_nrc_data.finding_violations_data
+- `icebase.us_nrc_data.site_location`: https://paper-plane.mydataos.com/metis/assets/table/icebase.icebase.us_nrc_data.site_location
 
 ## Layout
 - `deployment.yaml` — edit `repo.url` and `lensBaseDir` before applying.

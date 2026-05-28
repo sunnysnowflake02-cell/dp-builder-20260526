@@ -1,24 +1,23 @@
 version: v1
-lens: customer-360-segmentation-usecase
+lens: us-nrc-test-dp
 description: Semantic join graph for this product. Each Lens SQL file remains a single-table SELECT; relationships below define
   how logical tables connect for analytics and validation.
 edges:
-- left_table: customer_dimension
-  right_table: customer_behavioral_aggregates
-  left_fqn: icebase.customer_segmentation.customer_dimension
-  right_fqn: icebase.customer_segmentation.customer_behavioral_aggregates
+- left_table: finding_violations_data
+  right_table: exercise_schedule_data
+  left_fqn: icebase.us_nrc_data.finding_violations_data
+  right_fqn: icebase.us_nrc_data.exercise_schedule_data
   join_on:
-  - left: customer_id
-    right: customer_id
-  cardinality: one_to_one
-  id: f893d976-9c10-4f44-84ad-f5f8debe561f
-  rationale: Join customer dimensions to behavioral aggregates for comprehensive insights.
-- left_table: cs_ml_segment_definition_resource
-  right_table: cs_ml_segment_assignment_resource
-  left_fqn: icebase.customer_segmentation.cs_ml_segment_definition_resource
-  right_fqn: icebase.customer_segmentation.cs_ml_segment_assignment_resource
-  join_on:
-  - left: segment_id
-    right: segment_id
+  - left: site_name
+    right: facility
   cardinality: many_to_one
-  id: new-1779947765185-zxgkod
+  id: new-1779952433179-x1au0o
+- left_table: finding_violations_data
+  right_table: site_location
+  left_fqn: icebase.us_nrc_data.finding_violations_data
+  right_fqn: icebase.us_nrc_data.site_location
+  join_on:
+  - left: site_name
+    right: site_name
+  cardinality: many_to_one
+  id: new-1779952460178-p4l017
